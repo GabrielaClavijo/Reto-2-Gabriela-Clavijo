@@ -9,3 +9,4 @@ app.listen(port, "127.0.0.1")
 console.log(`activo en el puerto ${port}`);
 
 app.use(productosRoutes)
+
