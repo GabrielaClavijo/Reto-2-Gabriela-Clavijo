@@ -28,3 +28,23 @@ export const getProducto = (req, resp) => {
     }
 
 }
+
+//Insertar producto
+
+export const postProducto =(req, resp) => {
+  try {
+    const { sku, nombre, precio, url, marca, descripcion, iva, descuento, inventario, fecha_creacion } = req.body
+    if (!sku   || !nombre   || !precio   || !url   || !marca   || !descripcion   || !iva   || !descuento   || !fecha_creacion  ) {
+      return resp.status(400).json({ message: "registro incompleto" })
+    }
+    console.log(sku);
+    const nuevoProducto = { sku, nombre, precio, url, marca, descripcion, iva, descuento, inventario, fecha_creacion }
+    console.log(products);
+    products.push(nuevoProducto)
+    fs.writeFileSync('./helpers/productos.json', JSON.stringify(products))
+    resp.send(200, { message: "registro completo" })
+  } catch (error) {
+    resp.status(500)
+    resp.send(error.message)
+  }
+}
