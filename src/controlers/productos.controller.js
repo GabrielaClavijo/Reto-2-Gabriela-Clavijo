@@ -109,3 +109,4 @@ export const deleteProducto = (req, resp) => {
     resp.send(error.message)
   }
 }
+

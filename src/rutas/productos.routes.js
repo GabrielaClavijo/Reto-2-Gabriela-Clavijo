@@ -7,4 +7,5 @@ router.get('/admin/producto/:sku', getProducto)
 router.post('/admin/producto', postProducto)
 router.put('/admin/producto/:sku', putProducto)
 router.delete('/admin/producto/:sku', deleteProducto)
+
 export default router;
