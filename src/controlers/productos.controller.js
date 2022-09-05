@@ -92,4 +92,20 @@ export const putProducto =(req, resp) => {
     resp.status(500)
     resp.send(error.message)
     }
+}
+  
+
+//Eliminar producto
+export const deleteProducto = (req, resp) => {
+  try {
+    const skuupt = req.params.sku
+    const producto = products.find(producto => producto.sku === skuupt)
+    let posicion = products.indexOf(producto)
+    products.splice(posicion, 1)
+    resp.send(200, { message: "registro eliminado" })
+    fs.writeFileSync('./helpers/productos.json', JSON.stringify(products))
+  } catch (error) {
+    resp.status(500)
+    resp.send(error.message)
   }
+}
