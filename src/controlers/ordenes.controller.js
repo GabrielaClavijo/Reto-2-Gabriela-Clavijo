@@ -36,6 +36,46 @@ export const postResumenApp = (req, resp) => {
     const listaProductos = productos.split(",");
     const list = [];
     let precio_final = 0;
+    let total = 0;
+    if (listaProductos.length > 0) {
+      listaProductos.forEach((element) => {
+        const producto = products.find((e) => e.sku === element);
+        if (producto) {
+          const { sku, nombre, iva, descuento, precio } = producto;
+          precio_final = precio - precio * descuento + precio * iva;
+          list.push({ sku, nombre, precio_final });
+        } else {
+          list.push(element);
+        }
+      });
+
+      list.forEach(({ precio_final }) => {
+        total += precio_final;
+      });
+      console.log(total);
+    }
+    resp.json({ productos: list, total });
+  } catch (error) {
+    resp.status(500);
+    resp.send(error.message);
+  }
+};
+
+//Realizar compra
+
+export const postRealizarApp = (req, resp) => {
+  try {
+    const { nombre, apellido, total, productos } = req.body;
+    let id = orders[orders.length - 1].id + 1;
+
+    console.log(id);
+    const listaProductos = productos.split(",");
+    if (!nombre || !apellido || !productos) {
+      return resp.status(400).json({ message: "registro incompleto" });
+    }
+    let precio_final = 0;
+    let totalProductos = 0;
+    const list = [];
     if (listaProductos.length > 0) {
       listaProductos.forEach((element) => {
         const producto = products.find((e) => e.sku === element);
@@ -48,7 +88,19 @@ export const postResumenApp = (req, resp) => {
         }
       });
     }
-    resp.json({ productos: list, precio_final });
+    list.forEach(({ precio_final }) => {
+      totalProductos += precio_final;
+    });
+    const nuevaOrden = {
+      id,
+      nombre,
+      apellido,
+      total: totalProductos,
+      productos: listaProductos,
+    };
+    orders.push(nuevaOrden);
+    fs.writeFileSync("./helpers/ordenes.json", JSON.stringify(orders));
+    resp.send(200, { message: "Compra realizada" });
   } catch (error) {
     resp.status(500);
     resp.send(error.message);
