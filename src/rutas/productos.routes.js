@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { deleteProducto, getProducto, getProductos, postProducto, putProducto } from "../controlers/productos.controller.js";
 
+//Rutas que se llaman en cada método de productos.controller.js
 const router=Router()
 router.get('/admin/producto', getProductos) 
 router.get('/admin/producto/:sku', getProducto) 
