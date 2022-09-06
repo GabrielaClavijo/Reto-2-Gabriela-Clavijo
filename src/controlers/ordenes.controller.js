@@ -28,3 +28,29 @@ export const getOrdenes = (req, resp) => {
     resp.send(error.message);
   }
 };
+
+//Resumen de compra app movil
+export const postResumenApp = (req, resp) => {
+  try {
+    const { productos } = req.body;
+    const listaProductos = productos.split(",");
+    const list = [];
+    let precio_final = 0;
+    if (listaProductos.length > 0) {
+      listaProductos.forEach((element) => {
+        const producto = products.find((e) => e.sku === element);
+        if (producto) {
+          const { sku, nombre, iva, descuento, precio } = producto;
+          precio_final = precio - precio * descuento + precio * iva;
+          list.push({ sku, nombre, precio_final });
+        } else {
+          list.push(element);
+        }
+      });
+    }
+    resp.json({ productos: list, precio_final });
+  } catch (error) {
+    resp.status(500);
+    resp.send(error.message);
+  }
+};

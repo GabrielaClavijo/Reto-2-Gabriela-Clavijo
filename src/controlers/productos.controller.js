@@ -174,7 +174,7 @@ export const getProductosApp = (req, resp) => {
         };
       }
     );
-    console.log(infoProducto);
+
     resp.json(infoProducto);
   } catch (error) {
     resp.status(500);
@@ -191,7 +191,17 @@ export const getConsultarApp = (req, resp) => {
     const { sku, nombre, url, marca, precio, iva, descuento, descripcion } =
       producto;
     const precio_final = precio - precio * descuento + precio * iva;
-    resp.json({ sku, nombre, url, marca, precio, iva, descuento, descripcion, precio_final });
+    resp.json({
+      sku,
+      nombre,
+      url,
+      marca,
+      precio,
+      iva,
+      descuento,
+      descripcion,
+      precio_final,
+    });
   } catch (error) {
     resp.status(500);
     resp.send(error.message);
