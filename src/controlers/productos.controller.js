@@ -110,3 +110,21 @@ export const deleteProducto = (req, resp) => {
   }
 }
 
+//Listar productos App móvil
+export const getProductosApp=(req, resp) => {
+    try {
+      const productoExiste=products.filter(({inventario}) => inventario>0)
+      const infoProducto = productoExiste.map(({sku,nombre,url, marca, precio, iva, descuento}) => {
+        const precioFinal = precio - (precio * descuento) + (precio * iva)
+        return {
+          sku, nombre, url, marca, precioFinal
+        }
+      })
+      console.log(infoProducto);
+      resp.json(infoProducto)
+    } catch (error)
+     {
+        resp.status(500)
+        resp.send(error.message)
+    }
+}
